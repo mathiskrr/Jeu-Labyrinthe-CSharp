@@ -119,9 +119,10 @@ namespace Maze.Cmd
             if (monster == null)
             return;
 
-            if(monster.HP <= 25)
+            while(monster.HP > 0)
             {
                 monster.HP -= 10;
+                HP -= 10;
                 MonsterFound?.Invoke(this, new ItemFoundEventArgs<Monster>()
                 {
                     Item = monster,
