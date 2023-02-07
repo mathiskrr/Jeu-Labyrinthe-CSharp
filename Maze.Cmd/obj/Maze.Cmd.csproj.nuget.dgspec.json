@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\hozgo\\source\\repos\\Maze\\Maze.Cmd\\Maze.Cmd.csproj": {}
+    "C:\\Developpement\\Jeu-Labyrinthe-CSharp\\Maze.Cmd\\Maze.Cmd.csproj": {}
   },
   "projects": {
-    "C:\\Users\\hozgo\\source\\repos\\Maze\\Maze.Cmd\\Maze.Cmd.csproj": {
+    "C:\\Developpement\\Jeu-Labyrinthe-CSharp\\Maze.Cmd\\Maze.Cmd.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\hozgo\\source\\repos\\Maze\\Maze.Cmd\\Maze.Cmd.csproj",
+        "projectUniqueName": "C:\\Developpement\\Jeu-Labyrinthe-CSharp\\Maze.Cmd\\Maze.Cmd.csproj",
         "projectName": "Maze.Cmd",
-        "projectPath": "C:\\Users\\hozgo\\source\\repos\\Maze\\Maze.Cmd\\Maze.Cmd.csproj",
+        "projectPath": "C:\\Developpement\\Jeu-Labyrinthe-CSharp\\Maze.Cmd\\Maze.Cmd.csproj",
         "packagesPath": "C:\\Users\\hozgo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\hozgo\\source\\repos\\Maze\\Maze.Cmd\\obj\\",
+        "outputPath": "C:\\Developpement\\Jeu-Labyrinthe-CSharp\\Maze.Cmd\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\hozgo\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -16,8 +16,10 @@
             player.Name = name;
             player.LevelUp += player_LevelUp;
             player.PotionFound += player_PotionFound;
-            player.ToolsFound += player_ToolsFound;
-            player.TrapFound += player_TrapFound;
+            player.ToolFound += player_ToolsFound;
+            player.TrapAvoided += player_TrapAvoided;
+            player.Trapped += player_Trapped;
+            player.MonsterFound += player_MonsterFound;
 
             while (true)
             {
@@ -32,6 +34,7 @@
                 }
                 int random = Dice.Roll(1, 7);
                 int randomtool = Dice.Roll(1, 8);
+                int randommonster = Dice.Roll(1, 7);
                 switch (random)
                 {
                     case 1:
@@ -70,6 +73,11 @@
                             Tools tool = Tools.Generate();
                             player.PickUp(tool);
                         }
+                        if (randommonster == 6)
+                        {
+                            Monster monster = Monster.Generate();
+                                player.Fight(monster);
+                        }
                         player.Walk();
                         break;
 
@@ -81,6 +89,11 @@
                             Tools tool = Tools.Generate();
                             player.PickUp(tool);
                         }
+                        if (randommonster == 6)
+                        {
+                            Monster monster = Monster.Generate();
+                                player.Fight(monster);
+                        }
                         player.Walk();
                         break;
 
@@ -91,6 +104,11 @@
                         {
                             Tools tool = Tools.Generate();
                             player.PickUp(tool);
+                        }
+                        if (randommonster == 6)
+                        {
+                            Monster monster = Monster.Generate();
+                                player.Fight(monster);
                         }
                         player.Walk();
                         break;
@@ -107,25 +125,38 @@
             * Equivalent 2
             if (sender is Player player)*/
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"--- {e.Name} passe au niveau {e.Level} ---");
+            Console.WriteLine($"--- {e.PlayerName} passe au niveau {e.Level} ---");
             Console.ResetColor();
         }
-        private static void player_PotionFound(object? sender, PotionFoundEventArgs p)
+        private static void player_PotionFound(object? sender, ItemFoundEventArgs<Potion> e)
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"--- {p.PlayerName} à trouvé une {p.Potion} ---");
+            Console.WriteLine($"--- {e.PlayerName} à trouvé une {e.Item} ---");
             Console.ResetColor();
         }
-        private static void player_ToolsFound(object? sender, ToolsFoundEventArgs to)
+        private static void player_ToolsFound(object? sender, ItemFoundEventArgs<Tools> e)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"--- {to.PlayerName} à trouvé un(e) {to.Tools} ---");
+            Console.WriteLine($"--- {e.PlayerName} à trouvé un(e) {e.Item} ---");
             Console.ResetColor();
         }
-        private static void player_TrapFound(object? sender, TrapFoundEventArgs tr)
+        private static void player_Trapped(object? sender, ItemFoundEventArgs<Trap> e)
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"--- {tr.PlayerName} tombe sur un(e) {tr.Trap} ---");
+            Console.WriteLine($"--- {e.PlayerName} tombe sur un(e) {e.Item} ---");
+            Console.ResetColor();
+        }
+        private static void player_TrapAvoided(object? sender, ItemFoundEventArgs<Trap> e)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"--- {e.PlayerName} esquive le(s) {e.Item} ---");
+            Console.ResetColor();
+        }
+        private static void player_MonsterFound(object? sender, ItemFoundEventArgs<Monster> e)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"--- {e.PlayerName} tombe sur un {e.Item} ---");
+            Console.WriteLine($"--- {e.PlayerName} attaque le {e.Item} ---");
             Console.ResetColor();
         }
     }

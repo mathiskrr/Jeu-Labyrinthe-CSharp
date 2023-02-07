@@ -30,9 +30,11 @@ namespace Maze.Cmd
         EventHandler -> void (object sender, EventArgs args)*/
         
         public event EventHandler<LevelUpEventArgs> LevelUp;
-        public event EventHandler<PotionFoundEventArgs> PotionFound;
-        public event EventHandler<ToolsFoundEventArgs> ToolsFound;
-        public event EventHandler<TrapFoundEventArgs> TrapFound;
+        public event EventHandler<ItemFoundEventArgs<Tools>> ToolFound;
+        public event EventHandler<ItemFoundEventArgs<Potion>> PotionFound;
+        public event EventHandler<ItemFoundEventArgs<Trap>> TrapAvoided;
+        public event EventHandler<ItemFoundEventArgs<Trap>> Trapped;
+        public event EventHandler<ItemFoundEventArgs<Monster>> MonsterFound;
 
         public string Name;
         public int Level { get; private set; }
@@ -55,7 +57,7 @@ namespace Maze.Cmd
                     LevelUp?.Invoke(this, new LevelUpEventArgs()
                     {
                         Level = Level,
-                        Name = Name
+                        PlayerName = Name
                     });
                 }
             }
@@ -92,26 +94,39 @@ namespace Maze.Cmd
 
             Tools? tool = tools.FirstOrDefault(x => x.Trap == trap.Type);
 
-            TrapFound?.Invoke(this, new TrapFoundEventArgs()
-            {
-                Trap = trap,
-                PlayerName = Name
-            });
-
             if (tool != null)
             {
                 if (tool.DestroyedOnUse)
                     tools.Remove(tool);
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"Vous contrez le piège et vous perdez votre objet !");
-                Console.ResetColor();
+                    
+                TrapAvoided?.Invoke(this, new ItemFoundEventArgs<Trap>() { Item = trap, PlayerName = Name });
             }
             else
             {
                 HP -= trap.Damage;
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"Vous perdez {trap.Damage} points de vie, il vous reste {HP} points de vie !");
-                Console.ResetColor();
+                Trapped?.Invoke(this, new ItemFoundEventArgs<Trap>() { Item = trap, PlayerName = Name });
+            }
+        }
+
+        public void MonsterAttack(Monster? monster)
+        {
+            if (monster == null)
+                throw new ArgumentNullException(nameof(monster));
+        }
+
+        public void Fight(Monster? monster)
+        {
+            if (monster == null)
+            return;
+
+            if(monster.HP <= 25)
+            {
+                monster.HP -= 10;
+                MonsterFound?.Invoke(this, new ItemFoundEventArgs<Monster>()
+                {
+                    Item = monster,
+                    PlayerName = Name
+                });
             }
         }
 
@@ -121,9 +136,9 @@ namespace Maze.Cmd
                 return;
 
             tools.Add(tool);
-            ToolsFound?.Invoke(this, new ToolsFoundEventArgs()
+            ToolFound?.Invoke(this, new ItemFoundEventArgs<Tools>()
             {
-                Tools = tool,
+                Item = tool,
                 PlayerName = Name
             });
 
@@ -137,9 +152,9 @@ namespace Maze.Cmd
 
             //potions.Add(potion);
             potion.Affect(this);
-            PotionFound?.Invoke(this, new PotionFoundEventArgs()
+            PotionFound?.Invoke(this, new ItemFoundEventArgs<Potion>
             {
-                Potion = potion,
+                Item = potion,
                 PlayerName = Name
             }) ;
         }
